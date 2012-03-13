@@ -58,7 +58,8 @@ def draw(scr, capture):
 
 def runner(scr):
     capture = cv.CaptureFromCAM(-1)
-    cv.NamedWindow("w1", cv.CV_WINDOW_AUTOSIZE)
+    if (show_frame):
+        cv.NamedWindow("w1", cv.CV_WINDOW_AUTOSIZE)
     while True:
         draw(scr, capture)
 
