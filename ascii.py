@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import sys, cv, time, curses, math
+import sys, cv, time, curses, math, getopt
 
 # NOTE: size given in y,x
 def toNums(image, size):
@@ -38,7 +38,13 @@ def toAscii(values):
 
 def draw(scr, capture):
     frame = cv.QueryFrame(capture)
-    cv.ShowImage("w1", frame)
+
+    # options
+    if (mirror):
+        cv.Flip(frame, frame, 1)
+    if (show_frame):
+        cv.ShowImage("w1", frame)
+
     size = scr.getmaxyx()
     
     values = toNums(frame, size)
@@ -56,4 +62,15 @@ def runner(scr):
     while True:
         draw(scr, capture)
 
-curses.wrapper(runner)
+
+show_frame = False
+mirror = False
+if __name__ == '__main__':
+    options, args = getopt.getopt(sys.argv[1:],'fm')
+    for opt in options:
+        if opt[0] == '-f':
+            show_frame = True
+        if opt[0] == '-m':
+            mirror = True
+
+    curses.wrapper(runner)
